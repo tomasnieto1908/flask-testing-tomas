@@ -53,19 +53,22 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        email = request.form['email']
         db = get_db()
         error = None
 
         if not username:
             error = "usuario requerido."
+        elif not email:
+            error = 'error de mail'    
         elif not password:
             error = "contraseña requerida."
 
         if error is None:
             try:
                 db.execute(
-                    "INSERT INTO user (username, password) VALUES (?, ?)",
-                    (username, generate_password_hash(password)),
+                    "INSERT INTO user (username, password ,email) VALUES (?, ? ,?)",
+                    (username, generate_password_hash(password), email),
                 )
                 db.commit()
             except db.IntegrityError:
