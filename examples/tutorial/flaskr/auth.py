@@ -58,11 +58,11 @@ def register():
         error = None
 
         if not username:
-            error = "usuario requerido."
+            error = "usuario o contraseña incorrecta."
         elif not email:
             error = 'error de mail'    
         elif not password:
-            error = "contraseña requerida."
+            error = "usuario o contraseña incorrecta."
 
         if error is None:
             try:
@@ -97,9 +97,9 @@ def login():
         ).fetchone()
 
         if user is None:
-            error = "usuario incorrecto"
+            error = "usuario o contraseña incorrecta."
         elif not check_password_hash(user["password"], password):
-            error = "contraseña incorrecta."
+            error = "usuario o contraseña incorrecta."
 
         if error is None:
             # store the user id in a new session and return to the index
