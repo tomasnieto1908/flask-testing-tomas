@@ -127,3 +127,38 @@ def logout():
     return redirect(url_for("index"))
 
 
+
+    return wrapped_view        
+@bp.route('/updateemail', methods=('GET', 'POST'))
+def updateemail():
+    if request.method == 'POST':
+        email = request.form['new_email']
+        error = None
+        db = get_db()
+        if not email:
+            error = 'Email is required.'
+
+        if error is None:            
+            db.execute(
+                'UPDATE user SET email = ? WHERE id = ?',
+                (email, g.user['id'])
+            )
+            db.commit()
+            return redirect(url_for('index'))
+        else:
+            flash(error)
+
+    return render_template('auth/updateemail.html')
+
+@bp.route('/deleteUser', methods=('GET', 'POST'))
+def deleteUser():
+    db = get_db()              
+    db.execute(
+        'DELETE FROM user  WHERE id = ?',
+        (g.user['id'],)
+    )
+    db.commit()
+    session.clear()
+    return redirect(url_for('index'))
+
+

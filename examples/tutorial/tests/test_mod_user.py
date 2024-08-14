@@ -1,16 +1,17 @@
+from flask import session
 import pytest
 from flaskr.db import get_db
 
 def test_update_email(client, auth, app):
     auth.login()
     
-    assert client.get("/update-email/1").status_code == 200
+    assert client.get("/auth/updateemail").status_code == 200
 
-    client.post("/update-email/1", data={"email": "updated@example.com"})
+    client.post("/auth/updateemail", data={"new_email": "updated@example.com"})
     
     with app.app_context():
         db = get_db()
-        user = db.execute("SELECT * FROM users WHERE id = 1").fetchone()
+        user = db.execute("SELECT * FROM user WHERE id = 1").fetchone()
         
 
         assert user["email"] == "updated@example.com"
@@ -19,18 +20,14 @@ def test_update_email(client, auth, app):
 
 def test_delete_user(client, auth, app):
     auth.login()
-    
-    # Realiza la solicitud POST para eliminar al usuario con ID 1
-    response = client.post("/delete-user/1")
-    
-    # Verifica que la respuesta redirige a la página principal (o la ruta que corresponda)
+    response = client.post("/auth/deleteUser")
+
+    assert "Location" in response.headers
     assert response.headers["Location"] == "/"
-    
+     
     with app.app_context():
         db = get_db()
-        user = db.execute("SELECT * FROM users WHERE id = 1").fetchone()
+        user = db.execute("SELECT * FROM user WHERE id = 1").fetchone()
         
-        # Verifica que el usuario ha sido eliminado de la base de datos
         assert user is None
-
 

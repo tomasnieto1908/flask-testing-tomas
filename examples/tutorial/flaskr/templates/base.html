@@ -7,8 +7,10 @@
     {% if g.user %}
     <li><span>{{ g.user['username'] }}</span></li>
     <li><span>{{ g.user['email'] }}</span></li>
-    <li><a href="{{ url_for('auth.logout') }}">Log Out</a> {% else %}</li>
-
+    <li><a href="{{ url_for('auth.updateemail') }}">cambiar email</a></li>
+    <li><a href="{{ url_for('auth.logout') }}">salida</a></li>
+    <li><a href="{{ url_for('auth.deleteUser') }}">eliminar</a></li>
+    {% else %}
     <li><a href="{{ url_for('auth.register') }}">Register</a></li>
     <li>
       <a href="{{ url_for('auth.login') }}">Log In</a>
