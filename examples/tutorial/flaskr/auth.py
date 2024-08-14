@@ -89,6 +89,7 @@ def register():
     return render_template("auth/register.html")
 
 
+
 @bp.route("/login", methods=("GET", "POST"))
 def login():
     """Log in a registered user by adding the user id to the session."""
@@ -100,6 +101,8 @@ def login():
         user = db.execute(
             "SELECT * FROM user WHERE username = ?", (username,)
         ).fetchone()
+
+
 
         if user is None:
             error = "usuario o contraseña incorrecta."
@@ -122,3 +125,5 @@ def logout():
     """Clear the current session, including the stored user id."""
     session.clear()
     return redirect(url_for("index"))
+
+
